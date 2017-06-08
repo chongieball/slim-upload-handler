@@ -27,7 +27,7 @@ class UploadController extends BaseController
 
 	    $submit = $upload->upload($_FILES['image']);
 
-	    if (is_array($submit)) {
+	    if (key($submit) == 'errors') {
 	        return $this->responseDetail('errors', 400, $submit);
 	    }
 

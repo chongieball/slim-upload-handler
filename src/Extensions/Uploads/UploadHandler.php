@@ -36,25 +36,33 @@ class UploadHandler extends SiriusHandler
 
 	public function upload($name)
 	{
-		$result = $this->process($name);
+		$upload = $this->process($name);
 
-		if ($result->isValid()) {
-			$result->confirm();
-			return $result->name;
+		if ($upload->isValid()) {
+			$upload->confirm();
+			if (count($name['name'] > 1)) {
+				foreach ($upload as $key => $value) {
+					$result[$key] = $value->name;
+				}
+			}
+
+			if (is_string($name['name'])) {
+				$result = $upload->name;
+			}
 		} else {
-			$result->clear();
-			$message = $result->getMessages();
+			$upload->clear();
+			$message = $upload->getMessages();
 
 			foreach ($message as $key => $value) {
 				if (is_array($value)) {
 					foreach ($value as $keyValue => $valueValue) {
-						$error[$key][] = (string) $valueValue;
+						$result['errors'][$key][] = (string) $valueValue;
 					}
 				} else {
-					$error[] = (string) $value;
+					$result['errors'][] = (string) $value;
 				}
 			}
-			return $error;
 		}
+		return $result;
 	}
 }
