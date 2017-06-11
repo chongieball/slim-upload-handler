@@ -17,7 +17,7 @@ class UploadController extends BaseController
 	            'message'   => '{label} must be a valid image (jpg, jpeg, png)',
 	        ],
 	        'size'      => [
-	            'max'       => '1M',
+	            'size'       => '10K',
 	            'message'   => '{label} must be less than {max}',
 	        ],
 	    ];
@@ -27,7 +27,7 @@ class UploadController extends BaseController
 
 	    $submit = $upload->upload($_FILES['image']);
 
-	    if (key($submit) == 'errors') {
+	    if (key($submit) === 'errors') {
 	        return $this->responseDetail('errors', 400, $submit);
 	    }
 
